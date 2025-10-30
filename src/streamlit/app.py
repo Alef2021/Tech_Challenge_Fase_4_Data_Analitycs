@@ -11,19 +11,20 @@ import base64
 
 
 try:
-    model = joblib.load(f'C:\\Users\\Igor\\Documents\\GitHub\\Tech_Challenge_Fase_4_Data_Analitycs\\src\\modelos\\modelo_obesidade_xgb_model_3_class.pkl')
+    model = joblib.load(f'/workspaces/Tech_Challenge_Fase_4_Data_Analitycs/src/modelos/modelo_obesidade_xgb_model_3_class.pkl')
 
 
-    COLUNAS_FEATURES = ['Gênero', 'Idade', 'Histórico_Familiar_Obesidade', 
+
+except FileNotFoundError:
+    st.error("Erro: Arquivo do modelo 'src/modelos/modelo_obesidade_xgb_model_3_class.pkl' não encontrado. Certifique-se de ter salvo o modelo no diretório correto.")
+    st.stop()
+
+COLUNAS_FEATURES = ['Gênero', 'Idade', 'Histórico_Familiar_Obesidade', 
                         'Frequencia_Consumo_Alimento_Calorico', 'Frequencia_Consumo_Vegetais', 
                         'Numero_Refeicoes_Principais', 'Consumo_Alimento_Entre_Refeicoes', 
                         'Fumante', 'Consumo_Agua', 'Monitoramento_Calorico', 
                         'Frequencia_Atividade_Fisica', 'Tempo_Uso_Tecnologia', 
                         'Consumo_Alcool', 'Meio_Transporte']
-except FileNotFoundError:
-    st.error("Erro: Arquivo do modelo 'src/modelos/modelo_obesidade_xgb_model_3_class.pkl' não encontrado. Certifique-se de ter salvo o modelo no diretório correto.")
-    st.stop()
-
 
 def coletar_dados_paciente():
     st.sidebar.header('Dados do Paciente')
@@ -114,7 +115,7 @@ st.subheader('Preencha os dados a esquerda e clique em Fazer Previsão de Risco'
 
 #gif animado de fundo
 
-gif_path = r"C:\\Users\\Igor\\Documents\\GitHub\\Tech_Challenge_Fase_4_Data_Analitycs\\gif_fundo\\giphy.gif"
+gif_path = r"/workspaces/Tech_Challenge_Fase_4_Data_Analitycs/gif_fundo/giphy.gif"
 
 if os.path.exists(gif_path):
     with open(gif_path, "rb") as f:
