@@ -11,7 +11,7 @@ import base64
 
 
 try:
-    model = joblib.load(f'/workspaces/Tech_Challenge_Fase_4_Data_Analitycs/src/modelos/modelo_obesidade_xgb_model_3_class.pkl')
+    model = joblib.load(f'src/modelos/modelo_obesidade_xgb_model_3_class.pkl')
 
 
 
@@ -115,7 +115,7 @@ st.subheader('Preencha os dados a esquerda e clique em Fazer Previsão de Risco'
 
 #gif animado de fundo
 
-gif_path = r"/workspaces/Tech_Challenge_Fase_4_Data_Analitycs/gif_fundo/giphy.gif"
+gif_path = r"gif_fundo/giphy.gif"
 
 if os.path.exists(gif_path):
     with open(gif_path, "rb") as f:
