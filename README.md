@@ -52,7 +52,7 @@ O modelo **XGBoost** com **3 Classes** (Normal/Sobrepeso/Obeso) foi o escolhido,
 
 A aplicação `app.py` permite que a equipe médica insira os dados do paciente e receba uma **previsão do Status de Risco** (Baixo, Médio, Alto) e um **nível de confiança**:
 
-* **0:** `PESO NORMAL / BAIXO RISCO` (Cor Verde).
-* **1:** `SOBREPESO / RISCO MÉDIO` (Cor Laranja).
-* **2:** `OBESIDADE / ALTO RISCO` (Cor Vermelho).
+* **0:** `PESO NORMAL / BAIXO RISCO` / 🟢 Verde /
+* **1:** `SOBREPESO / RISCO MÉDIO`  /🟠 Laranja /
+* **2:** `OBESIDADE / ALTO RISCO`  /🔴 Vermelho /
 
