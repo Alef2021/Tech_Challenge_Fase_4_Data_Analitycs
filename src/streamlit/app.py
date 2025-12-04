@@ -43,34 +43,36 @@ def coletar_dados_paciente():
 
     # colunas bbinarias (0/1)
     sim_nao_map = {'Não': 0, 'Sim': 1}
-    hist_familiar = st.sidebar.selectbox('Histórico Familiar de Obesidade?', options=list(sim_nao_map.keys()))
-    favc = st.sidebar.selectbox('Consome alimentos altamente calóricos frequentemente?', options=list(sim_nao_map.keys()))
-    fumante = st.sidebar.selectbox('Fumante?', options=list(sim_nao_map.keys()))
-    scc = st.sidebar.selectbox('Monitora suas calorias?', options=list(sim_nao_map.keys()))
+    hist_familiar = st.sidebar.selectbox('Tem histórico Familiar de Obesidade?', options=list(sim_nao_map.keys()))
+    favc = st.sidebar.selectbox('Consome alimentos calóricos/Fast food frequentemente?', options=list(sim_nao_map.keys()))
+    fumante = st.sidebar.selectbox('É Fumante?', options=list(sim_nao_map.keys()))
+    scc = st.sidebar.selectbox('Você monitora as calorias que ingere diariamente?', options=list(sim_nao_map.keys()))
 
 #################################################################################################
 
     # Colunas de 0 a 3 (Frequência/Quantidade)
     # Consumo_Alimento_Entre_Refeicoes, Consumo_Alcool (no=0, Sometimes=1, Frequently=2, Always=3)
-    frequencia_map = {'Nunca (0)': 0, 'Às vezes (1)': 1, 'Frequentemente (2)': 2, 'Sempre (3)': 3}
+    frequencia_map = {'Nunca ': 0, 'Às vezes ': 1, 'Frequentemente ': 2, 'Sempre ': 3}
     caec = st.sidebar.selectbox('Come algo entre refeições?', options=list(frequencia_map.keys()))
     calc = st.sidebar.selectbox('Com que frequencia consome Álcool', options=list(frequencia_map.keys()))
 
 ################################################################################################# 
 
-    # frequencia_consumo_begetais, Numero_Refeicoes_Principais, Consumo_Agua, Tempo_Uso_Tecnologia (0 a 3)
-    fcvc = st.sidebar.slider('Com que frequencia consome Vegetais (0 a 3)', 0, 3, 2)
-    ncp = st.sidebar.slider('Nº de Refeições Principais (0 a 3)', 0, 3, 3)
-    ch2o = st.sidebar.slider('Consumo de Água em Litros (0 a 3)', 0, 3, 2)
-    tue = st.sidebar.slider('Tempo Uso de Tecnologia (0 a 3)', 0, 3, 1)
-
-#################################################################################################
-    # frequencia_attividade_Fisica (0 a 2)
-    faf = st.sidebar.slider('Frequência Atividade Física (0 a 2)', 0, 2, 1)
+    # frequencia_consumo_begetais, Numero_Refeicoes_Principais, Consumo_Agua, Tempo_Uso_Tecnologia, frequencia_attividade_Fisica (0 a 3)
+    fcvc = st.sidebar.slider('Com que frequencia consome Vegetais ?\
+                             0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
+    ncp = st.sidebar.slider('Nº de Refeições Principais?\
+                            0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
+    ch2o = st.sidebar.slider('Consumo de Água em Litros? \
+                            0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
+    tue = st.sidebar.slider('Tempo Uso de Tecnologia? \
+                            0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
+    faf = st.sidebar.slider('Frequência Atividade Física \
+                            0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
 
     # meio_transportes (0=Baixa, 1=Média, 2=Alta intensidade)
-    transporte_map = {'Automóvel/Moto (0 - Baixa)': 0, 'Transporte Público (1 - Média)': 1, 'Caminhar/Bike (2 - Alta)': 2}
-    mtrans = st.sidebar.selectbox('Meio de Transporte', options=list(transporte_map.keys()))
+    transporte_map = {'Automóvel/Moto': 0, 'Transporte Público': 1, 'Caminhar/Bike': 2}
+    mtrans = st.sidebar.selectbox('Qual meio de transporte você costuma usar?', options=list(transporte_map.keys()))
 
 #################################################################################################
 
