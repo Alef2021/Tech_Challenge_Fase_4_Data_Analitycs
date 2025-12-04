@@ -57,7 +57,13 @@ def coletar_dados_paciente():
     calc = st.sidebar.selectbox('Com que frequencia consome Álcool', options=list(frequencia_map.keys()))
 
 ################################################################################################# 
-    st.sidebar.header('0 Nunca      1 Às vezes      2 Frequentemente        3 Sempre')
+    st.sidebar.markdown("""
+    **0 — Nunca**  
+    **1 — Às vezes**  
+    **2 — Frequentemente**  
+    **3 — Sempre**
+    """)
+
 
     # frequencia_consumo_begetais, Numero_Refeicoes_Principais, Consumo_Agua, Tempo_Uso_Tecnologia, frequencia_attividade_Fisica (0 a 3)
     fcvc = st.sidebar.slider('Com que frequencia você consome Vegetais ?', 0, 3, 2)
