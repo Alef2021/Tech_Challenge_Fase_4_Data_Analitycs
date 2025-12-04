@@ -58,6 +58,8 @@ def coletar_dados_paciente():
 
 ################################################################################################# 
     st.sidebar.markdown("""
+    **Responda a Escala de Frequência/Quantidade:**
+                        
     **0 — Nunca**  
     **1 — Às vezes**  
     **2 — Frequentemente**  
