@@ -64,8 +64,8 @@ def coletar_dados_paciente():
 
     # frequencia_consumo_begetais, Numero_Refeicoes_Principais, Consumo_Agua, Tempo_Uso_Tecnologia, frequencia_attividade_Fisica (0 a 3)
  
-    ncp = st.sidebar.slider('Nº de Refeições Principais no dia?', 0, 3, 2)
-    ch2o = st.sidebar.slider('Consome quanto Litros de Água por dia?', 0, 3, 2)
+    ncp = st.sidebar.slider('Nº de Refeições Principais no dia?', 1, 4, 2)
+    ch2o = st.sidebar.slider('Consome quanto Litros de Água por dia?', 1, 4, 2)
 
     # meio_transportes (0=Baixa, 1=Média, 2=Alta intensidade)
     transporte_map = {'Automóvel/Moto': 0, 'Transporte Público': 1, 'Caminhar/Bike': 2}
