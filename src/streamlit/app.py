@@ -46,7 +46,7 @@ def coletar_dados_paciente():
     hist_familiar = st.sidebar.selectbox('Histórico Familiar de Obesidade?', options=list(sim_nao_map.keys()))
     favc = st.sidebar.selectbox('Consome alimentos altamente calóricos frequentemente?', options=list(sim_nao_map.keys()))
     fumante = st.sidebar.selectbox('Fumante?', options=list(sim_nao_map.keys()))
-    scc = st.sidebar.selectbox('Monitora calorias?', options=list(sim_nao_map.keys()))
+    scc = st.sidebar.selectbox('Monitora suas calorias?', options=list(sim_nao_map.keys()))
 
 #################################################################################################
 
@@ -54,14 +54,14 @@ def coletar_dados_paciente():
     # Consumo_Alimento_Entre_Refeicoes, Consumo_Alcool (no=0, Sometimes=1, Frequently=2, Always=3)
     frequencia_map = {'Nunca (0)': 0, 'Às vezes (1)': 1, 'Frequentemente (2)': 2, 'Sempre (3)': 3}
     caec = st.sidebar.selectbox('Come algo entre refeições?', options=list(frequencia_map.keys()))
-    calc = st.sidebar.selectbox('Frequência de Consumo de Álcool', options=list(frequencia_map.keys()))
+    calc = st.sidebar.selectbox('Com que frequencia consome Álcool', options=list(frequencia_map.keys()))
 
 ################################################################################################# 
 
     # frequencia_consumo_begetais, Numero_Refeicoes_Principais, Consumo_Agua, Tempo_Uso_Tecnologia (0 a 3)
-    fcvc = st.sidebar.slider('Frequência Consumo de Vegetais (0 a 3)', 0, 3, 2)
+    fcvc = st.sidebar.slider('Com que frequencia consome Vegetais (0 a 3)', 0, 3, 2)
     ncp = st.sidebar.slider('Nº de Refeições Principais (0 a 3)', 0, 3, 3)
-    ch2o = st.sidebar.slider('Consumo de Água (0 a 3)', 0, 3, 2)
+    ch2o = st.sidebar.slider('Consumo de Água em Litros (0 a 3)', 0, 3, 2)
     tue = st.sidebar.slider('Tempo Uso de Tecnologia (0 a 3)', 0, 3, 1)
 
 #################################################################################################
