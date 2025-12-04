@@ -61,11 +61,13 @@ def coletar_dados_paciente():
 
 ################################################################################################# 
 
+    # Consumo_Agua Numero_Refeicoes_Principais (0=Baixa, 1=Média, 2=Alta intensidade)
+    litro_map = {'Até 1 litro': 0, 'Até 2 litros': 1, 'Até 3 litros': 2,'Até 4 litros': 3}
+    ch2o = st.sidebar.selectbox('Consome quanto Litros de Água por dia ? ', options=list(litro_map.keys()))
 
-    # frequencia_consumo_begetais, Numero_Refeicoes_Principais, Consumo_Agua, Tempo_Uso_Tecnologia, frequencia_attividade_Fisica (0 a 3)
- 
-    ncp = st.sidebar.slider('Nº de Refeições Principais no dia?', 1, 4, 2)
-    ch2o = st.sidebar.slider('Consome quanto Litros de Água por dia?', 1, 4, 2)
+    refeicao_map = {'1': 0, '2': 1, '3': 2,'4': 3}
+    ncp = st.sidebar.selectbox('Nº de Refeições Principais no dia ?', options=list(refeicao_map.keys()))
+
 
     # meio_transportes (0=Baixa, 1=Média, 2=Alta intensidade)
     transporte_map = {'Automóvel/Moto': 0, 'Transporte Público': 1, 'Caminhar/Bike': 2}
@@ -80,10 +82,10 @@ def coletar_dados_paciente():
         'Histórico_Familiar_Obesidade': sim_nao_map[hist_familiar],
         'Frequencia_Consumo_Alimento_Calorico': sim_nao_map[favc],
         'Frequencia_Consumo_Vegetais': frequencia_map[fcvc],
-        'Numero_Refeicoes_Principais': ncp,
+        'Numero_Refeicoes_Principais': refeicao_map[ncp],
         'Consumo_Alimento_Entre_Refeicoes': frequencia_map[caec],
         'Fumante': sim_nao_map[fumante],
-        'Consumo_Agua': ch2o,
+        'Consumo_Agua': litro_map[ch2o],
         'Monitoramento_Calorico': sim_nao_map[scc],
         'Frequencia_Atividade_Fisica': frequencia_map[faf],
         'Tempo_Uso_Tecnologia': frequencia_map[tue],
