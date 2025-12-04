@@ -57,18 +57,14 @@ def coletar_dados_paciente():
     calc = st.sidebar.selectbox('Com que frequencia consome Álcool', options=list(frequencia_map.keys()))
 
 ################################################################################################# 
+    st.sidebar.header('0 Nunca      1 Às vezes      2 Frequentemente        3 Sempre')
 
     # frequencia_consumo_begetais, Numero_Refeicoes_Principais, Consumo_Agua, Tempo_Uso_Tecnologia, frequencia_attividade_Fisica (0 a 3)
-    fcvc = st.sidebar.slider('Com que frequencia consome Vegetais ?\
-                             0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
-    ncp = st.sidebar.slider('Nº de Refeições Principais?\
-                            0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
-    ch2o = st.sidebar.slider('Consumo de Água em Litros? \
-                            0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
-    tue = st.sidebar.slider('Tempo Uso de Tecnologia? \
-                            0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
-    faf = st.sidebar.slider('Frequência Atividade Física \
-                            0 Nunca, 1 Às vezes, 2 Frequentemente ou 3 Sempre', 0, 3, 2)
+    fcvc = st.sidebar.slider('Com que frequencia você consome Vegetais ?', 0, 3, 2)
+    ncp = st.sidebar.slider('Nº de Refeições Principais no dia?', 0, 3, 2)
+    ch2o = st.sidebar.slider('Consome quanto Litros de Água por dia?', 0, 3, 2)
+    tue = st.sidebar.slider('Costuma passar muito tempo sentado no computador?', 0, 3, 2)
+    faf = st.sidebar.slider('Frequência Atividade Física?', 0, 3, 2)
 
     # meio_transportes (0=Baixa, 1=Média, 2=Alta intensidade)
     transporte_map = {'Automóvel/Moto': 0, 'Transporte Público': 1, 'Caminhar/Bike': 2}
