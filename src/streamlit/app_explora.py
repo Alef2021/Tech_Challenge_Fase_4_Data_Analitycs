@@ -3,6 +3,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import itertools
+import streamlit as st
+
+
+st.set_page_config(
+    page_title="Dashboard - Análise Exploratória de Obesidade",
+    layout="wide"
+)
+# =============================
+# BOTÃO DE NAVEGAÇÃO (TOPO DIREITO)
+# =============================
+
+col1, col2, col3 = st.columns([8, 1, 1])
+
+with col3:
+    if st.button("🔁 Modelo ML de Previsão"):
+        st.switch_page("pages/app.py")
+
+
 
 # =============================
 # CONFIGURAÇÃO GLOBAL DE ESTILO

@@ -6,8 +6,20 @@ import matplotlib.pyplot as plt
 import os
 import base64
 import math
+import streamlit as st
 
 
+st.set_page_config(
+    page_title="Previsão de Obesidade",
+    layout="wide"
+)
+
+col1, col2, col3 = st.columns([9, 1, 3])
+
+with col3:
+    if st.button("⬅️ Voltar para Análise Exploratória"):
+        st.switch_page("app_explora.py")
+        
 
 
 
@@ -101,11 +113,17 @@ def coletar_dados_paciente():
 #################################################################################################
 
 # Título e descrição do aplicativo
-st.title('Sistema Preditivo de Risco de Obesidade')
 st.markdown("""
+<h1 style="font-size:44px; margin-bottom:10px;">
+🧠 Sistema Preditivo de Risco de Obesidade
+</h1>
+
+<p style="font-size:30px;  line-height:1.6;">
 Este aplicativo utiliza um modelo de Machine Learning (XGBoost) para prever o risco de obesidade 
 de um paciente com base em fatores de estilo de vida.
-""")
+</p>
+""", unsafe_allow_html=True)
+
 #################################################################################################
 
 # Chamada da função para coletar os dados do paciente
@@ -127,7 +145,7 @@ if os.path.exists(gif_path):
     # HTML sem fundo preto, apenas o GIF centralizado
     html = f"""
     <div style="padding:20px; border-radius:10px; display:flex; justify-content:center;">
-        <img src="data:image/gif;base64,{b64}" alt="GIF animado" style="width:400px; border-radius:10px;" />
+        <img src="data:image/gif;base64,{b64}" alt="GIF animado" style="width:500px; border-radius:10px;" />
     </div>
     """
     st.markdown(html, unsafe_allow_html=True)
@@ -211,7 +229,7 @@ df_ruins = (
 
 df_ruins = df_ruins[df_ruins['Impacto Negativo'] > 0].head(3)
 
-fig1, ax1 = plt.subplots()
+fig1, ax1 =  plt.subplots(figsize=(4, 4))
 ax1.pie(
     df_ruins['Impacto Negativo'],
     labels=df_ruins.index,
@@ -243,7 +261,7 @@ df_bons = (
 
 df_bons = df_bons[df_bons['Impacto Positivo'] > 0].head(3)
 
-fig3, ax3 = plt.subplots()
+fig3, ax3 = plt.subplots(figsize=(4, 4))
 ax3.pie(
     df_bons['Impacto Positivo'],
     labels=df_bons.index,
@@ -291,7 +309,7 @@ valores += valores[:1]
 angles = np.linspace(0, 2 * math.pi, len(labels), endpoint=False)
 angles = np.concatenate([angles, angles[:1]])
 
-fig2 = plt.figure(figsize=(6, 6))
+fig2 = plt.figure(figsize=(4, 4))
 ax2 = fig2.add_subplot(111, polar=True)
 
 ax2.plot(angles, valores, linewidth=2)
