@@ -2,9 +2,10 @@ import streamlit as st
 import pandas as pd
 import joblib
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import os
 import base64
+import math
 
 
 
@@ -24,7 +25,7 @@ COLUNAS_FEATURES = ['Gênero', 'Idade', 'Histórico_Familiar_Obesidade',
                         'Numero_Refeicoes_Principais', 'Consumo_Alimento_Entre_Refeicoes', 
                         'Fumante', 'Consumo_Agua', 'Monitoramento_Calorico', 
                         'Frequencia_Atividade_Fisica', 'Tempo_Uso_Tecnologia', 
-                        'Consumo_Alcool', 'Meio_Transporte']
+                        'Consumo_Alcool','Meio_Transporte'] 
 
 def coletar_dados_paciente():
     st.sidebar.header('Dados do Paciente')
@@ -44,7 +45,7 @@ def coletar_dados_paciente():
     # colunas bbinarias (0/1)
     sim_nao_map = {'Não': 0, 'Sim': 1}
     hist_familiar = st.sidebar.selectbox('Tem histórico Familiar de Obesidade?', options=list(sim_nao_map.keys()))
-    favc = st.sidebar.selectbox('Consome alimentos calóricos/Fast food frequentemente?', options=list(sim_nao_map.keys()))
+    favc = st.sidebar.selectbox('Consome Fast food frequentemente?', options=list(sim_nao_map.keys()))
     fumante = st.sidebar.selectbox('É Fumante?', options=list(sim_nao_map.keys()))
     scc = st.sidebar.selectbox('Você monitora as calorias que ingere diariamente?', options=list(sim_nao_map.keys()))
 
@@ -53,10 +54,10 @@ def coletar_dados_paciente():
     # Colunas de 0 a 3 (Frequência/Quantidade)
     # Consumo_Alimento_Entre_Refeicoes, Consumo_Alcool (no=0, Sometimes=1, Frequently=2, Always=3)
     frequencia_map = {'Nunca ': 0, 'Às vezes ': 1, 'Frequentemente ': 2, 'Sempre ': 3}
-    caec = st.sidebar.selectbox('Come algo entre refeições ?', options=list(frequencia_map.keys()))
-    calc = st.sidebar.selectbox('Com que frequencia consome Álcool ?', options=list(frequencia_map.keys()))
-    fcvc = st.sidebar.selectbox('Com que frequencia você consome Vegetais ?', options=list(frequencia_map.keys()))
-    tue = st.sidebar.selectbox('Costuma passar muito tempo sentado no computador ?', options=list(frequencia_map.keys()))
+    caec = st.sidebar.selectbox('Come alimentos caloricos entre as refeições ?', options=list(frequencia_map.keys()))
+    calc = st.sidebar.selectbox('Consome Álcool ?', options=list(frequencia_map.keys()))
+    fcvc = st.sidebar.selectbox('Consome Vegetais ?', options=list(frequencia_map.keys()))
+    tue = st.sidebar.selectbox('Passa muito tempo no celular?', options=list(frequencia_map.keys()))
     faf = st.sidebar.selectbox('Frequência Atividade Física ?', options=list(frequencia_map.keys()))
 
 ################################################################################################# 
@@ -90,7 +91,7 @@ def coletar_dados_paciente():
         'Frequencia_Atividade_Fisica': frequencia_map[faf],
         'Tempo_Uso_Tecnologia': frequencia_map[tue],
         'Consumo_Alcool': frequencia_map[calc],
-        'Meio_Transporte': transporte_map[mtrans],
+        'Meio_Transporte': transporte_map[mtrans], 
     }
     
     # Retornar como um DataFrame com a ordem de colunas correta
@@ -185,3 +186,146 @@ if st.button('Fazer Previsão de Risco'):
         st.info("Risco BAIXO: Recomenda-se a manutenção dos hábitos atuais e monitoramento periódico.")
 
 #################################################################################################
+
+    ########GRAFICO 1###############
+    st.markdown("---")
+    st.subheader("🛡️ Principais Hábitos que Mais Impactaram Negativamente")
+
+    # Todas as respostas do usuário (escala 0–3)
+    habitos_usuario = {
+        'Atividade Física': input_df['Frequencia_Atividade_Fisica'][0],
+        'Consumo de Vegetais': input_df['Frequencia_Consumo_Vegetais'][0],
+        'Consumo de Água': input_df['Consumo_Agua'][0],
+        'Número de Refeições': input_df['Numero_Refeicoes_Principais'][0],
+        'Alimentos Entre Refeições': input_df['Consumo_Alimento_Entre_Refeicoes'][0],
+        'Consumo de Álcool': input_df['Consumo_Alcool'][0],
+        'Uso de Tecnologia': input_df['Tempo_Uso_Tecnologia'][0],
+        'Alimentos Calóricos': input_df['Frequencia_Consumo_Alimento_Calorico'][0],
+        'Monitoramento Calórico': input_df['Monitoramento_Calorico'][0],
+        'Tabagismo': input_df['Fumante'][0],
+    }
+
+    # Impacto negativo = distância do ideal (3)
+    impacto_negativo = {
+        k: abs(v - 3) for k, v in habitos_usuario.items()
+    }
+
+    df_impacto = (
+        pd.DataFrame.from_dict(
+            impacto_negativo,
+            orient='index',
+            columns=['Impacto Negativo']
+        )
+        .sort_values('Impacto Negativo', ascending=False)
+    )
+
+    # Remove hábitos adequados (impacto zero)
+    df_impacto = df_impacto[df_impacto['Impacto Negativo'] > 0]
+
+    # Top 3 hábitos que mais influenciaram negativamente
+    df_pizza_usuario = df_impacto.head(3)
+
+    # Cores neutras
+    cores_pb = ['black', 'gray', 'lightgray']
+
+    fig1, ax1 = plt.subplots()
+    ax1.pie(
+        df_pizza_usuario['Impacto Negativo'],
+        labels=df_pizza_usuario.index,
+        autopct='%1.0f%%',
+        startangle=90,
+        colors=cores_pb,
+        wedgeprops={'edgecolor': 'black'}
+    )
+
+    ax1.set_title('Top 3 Hábitos que Mais Impactaram Negativamente Seu Resultado')
+    st.pyplot(fig1)
+
+
+    ########GRAFICO 2###############
+    st.markdown("---")
+    st.subheader("📊 Perfil Comportamental Geral")
+
+    labels = [
+        'Atividade Física',
+        'Vegetais',
+        'Água',
+        'Álcool',
+        'Tecnologia',
+        'Alimentos Calóricos'
+    ]
+
+    valores = [
+        input_df['Frequencia_Atividade_Fisica'][0],
+        input_df['Frequencia_Consumo_Vegetais'][0],
+        input_df['Consumo_Agua'][0],
+        3 - input_df['Consumo_Alcool'][0],
+        3 - input_df['Tempo_Uso_Tecnologia'][0],
+        3 - input_df['Frequencia_Consumo_Alimento_Calorico'][0]
+    ]
+
+    valores += valores[:1]
+
+    angles = [n / float(len(labels)) * 2 * math.pi for n in range(len(labels))]
+    angles += angles[:1]
+
+    fig2 = plt.figure()
+    ax2 = fig2.add_subplot(111, polar=True)
+
+    ax2.plot(angles, valores, color='black')
+    ax2.fill(angles, valores, alpha=0.15, color='black')
+
+    ax2.set_thetagrids(np.degrees(angles[:-1]), labels)
+    ax2.set_ylim(0, 3)
+
+    st.pyplot(fig2)
+
+
+    ### GRAFICO 3###############
+
+    st.markdown("---")
+    st.subheader("🛡️ Prioridades de Melhoria para Prevenção da Obesidade")
+
+    # Valores atuais do usuário (0 a 3)
+    habitos_usuario = {
+        'Atividade Física': input_df['Frequencia_Atividade_Fisica'][0],
+        'Consumo de Vegetais': input_df['Frequencia_Consumo_Vegetais'][0],
+        'Ingestão de Água': input_df['Consumo_Agua'][0],
+        'Controle do Álcool': 3 - input_df['Consumo_Alcool'][0],
+        'Tempo de Tela': 3 - input_df['Tempo_Uso_Tecnologia'][0],
+        'Alimentos Calóricos': 3 - input_df['Frequencia_Consumo_Alimento_Calorico'][0],
+    }
+
+    # GAP para o comportamento ideal
+    gap_preventivo = {k: 3 - v for k, v in habitos_usuario.items()}
+
+    df_gap = (
+        pd.DataFrame.from_dict(
+            gap_preventivo,
+            orient='index',
+            columns=['Distância do Ideal']
+        )
+        .sort_values('Distância do Ideal', ascending=False)
+    )
+
+    # Remove hábitos já adequados
+    df_gap = df_gap[df_gap['Distância do Ideal'] > 0]
+
+    # Seleciona os 3 principais
+    df_pizza_3 = df_gap.head(3)
+
+    # Cores preto, cinza e branco
+    cores_pb = ['black', 'gray', 'lightgray']
+
+    fig3, ax3 = plt.subplots()
+    ax3.pie(
+        df_pizza_3['Distância do Ideal'],
+        labels=df_pizza_3.index,
+        autopct='%1.0f%%',
+        startangle=90,
+        colors=cores_pb,
+        wedgeprops={'edgecolor': 'black'}
+    )
+
+    ax3.set_title('Top 3 Fatores Onde Pequenas Mudanças Mais Ajudam')
+    st.pyplot(fig3)
