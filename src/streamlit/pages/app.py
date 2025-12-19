@@ -135,20 +135,12 @@ st.subheader('Preencha os dados a esquerda e clique em Fazer Previsão de Risco'
 
 #gif animado de fundo
 
-gif_path = r"gif_fundo/giphy.gif"
+gif_path = f"gif_fundo/giphy.gif"
 
 if os.path.exists(gif_path):
-    with open(gif_path, "rb") as f:
-        data = f.read()
-    b64 = base64.b64encode(data).decode("utf-8")
-
-    # HTML sem fundo preto, apenas o GIF centralizado
-    html = f"""
-    <div style="padding:20px; border-radius:10px; display:flex; justify-content:center;">
-        <img src="data:image/gif;base64,{b64}" alt="GIF animado" style="width:500px; border-radius:10px;" />
-    </div>
-    """
-    st.markdown(html, unsafe_allow_html=True)
+    c1, c2, c3 = st.columns([1, 2, 1])
+    with c2:
+        st.image(gif_path, width=700)
 else:
     st.error(f"GIF não encontrado em: {gif_path}")
 
