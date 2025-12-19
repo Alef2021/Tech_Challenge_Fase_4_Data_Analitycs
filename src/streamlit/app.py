@@ -38,7 +38,7 @@ def coletar_dados_paciente():
 #################################################################################################
 
     # Idade, Peso, Altura (uso simples no Streamlit)
-    idade = st.sidebar.slider('Idade (anos)', min_value=10, max_value=80, value=30, step=1)
+    idade = st.sidebar.slider('Idade (anos)', min_value=10, max_value=80, value=31, step=1)
 
 ################################################################################################# 
 
@@ -187,145 +187,117 @@ if st.button('Fazer Previsão de Risco'):
 
 #################################################################################################
 
-    ########GRAFICO 1###############
-    st.markdown("---")
-    st.subheader("🛡️ Principais Hábitos que Mais Impactaram Negativamente")
-
-    # Todas as respostas do usuário (escala 0–3)
-    habitos_usuario = {
-        'Atividade Física': input_df['Frequencia_Atividade_Fisica'][0],
-        'Consumo de Vegetais': input_df['Frequencia_Consumo_Vegetais'][0],
-        'Consumo de Água': input_df['Consumo_Agua'][0],
-        'Número de Refeições': input_df['Numero_Refeicoes_Principais'][0],
-        'Alimentos Entre Refeições': input_df['Consumo_Alimento_Entre_Refeicoes'][0],
-        'Consumo de Álcool': input_df['Consumo_Alcool'][0],
-        'Uso de Tecnologia': input_df['Tempo_Uso_Tecnologia'][0],
-        'Alimentos Calóricos': input_df['Frequencia_Consumo_Alimento_Calorico'][0],
-        'Monitoramento Calórico': input_df['Monitoramento_Calorico'][0],
-        'Tabagismo': input_df['Fumante'][0],
-    }
-
-    # Impacto negativo = distância do ideal (3)
-    impacto_negativo = {
-        k: abs(v - 3) for k, v in habitos_usuario.items()
-    }
-
-    df_impacto = (
-        pd.DataFrame.from_dict(
-            impacto_negativo,
-            orient='index',
-            columns=['Impacto Negativo']
-        )
-        .sort_values('Impacto Negativo', ascending=False)
-    )
-
-    # Remove hábitos adequados (impacto zero)
-    df_impacto = df_impacto[df_impacto['Impacto Negativo'] > 0]
-
-    # Top 3 hábitos que mais influenciaram negativamente
-    df_pizza_usuario = df_impacto.head(3)
-
-    # Cores neutras
-    cores_pb = ['black', 'gray', 'lightgray']
-
-    fig1, ax1 = plt.subplots()
-    ax1.pie(
-        df_pizza_usuario['Impacto Negativo'],
-        labels=df_pizza_usuario.index,
-        autopct='%1.0f%%',
-        startangle=90,
-        colors=cores_pb,
-        wedgeprops={'edgecolor': 'black'}
-    )
-
-    ax1.set_title('Top 3 Hábitos que Mais Impactaram Negativamente Seu Resultado')
-    st.pyplot(fig1)
 
 
-    ########GRAFICO 2###############
-    st.markdown("---")
-    st.subheader("📊 Perfil Comportamental Geral")
-
-    labels = [
-        'Atividade Física',
-        'Vegetais',
-        'Água',
-        'Álcool',
-        'Tecnologia',
-        'Alimentos Calóricos'
-    ]
-
-    valores = [
-        input_df['Frequencia_Atividade_Fisica'][0],
-        input_df['Frequencia_Consumo_Vegetais'][0],
-        input_df['Consumo_Agua'][0],
-        3 - input_df['Consumo_Alcool'][0],
-        3 - input_df['Tempo_Uso_Tecnologia'][0],
-        3 - input_df['Frequencia_Consumo_Alimento_Calorico'][0]
-    ]
-
-    valores += valores[:1]
-
-    angles = [n / float(len(labels)) * 2 * math.pi for n in range(len(labels))]
-    angles += angles[:1]
-
-    fig2 = plt.figure()
-    ax2 = fig2.add_subplot(111, polar=True)
-
-    ax2.plot(angles, valores, color='black')
-    ax2.fill(angles, valores, alpha=0.15, color='black')
-
-    ax2.set_thetagrids(np.degrees(angles[:-1]), labels)
-    ax2.set_ylim(0, 3)
-
-    st.pyplot(fig2)
 
 
-    ### GRAFICO 3###############
 
-    st.markdown("---")
-    st.subheader("🛡️ Prioridades de Melhoria para Prevenção da Obesidade")
+st.markdown("---")
+st.subheader("🚨 Top 3 Hábitos que Mais Aumentam o Risco de Obesidade")
 
-    # Valores atuais do usuário (0 a 3)
-    habitos_usuario = {
-        'Atividade Física': input_df['Frequencia_Atividade_Fisica'][0],
-        'Consumo de Vegetais': input_df['Frequencia_Consumo_Vegetais'][0],
-        'Ingestão de Água': input_df['Consumo_Agua'][0],
-        'Controle do Álcool': 3 - input_df['Consumo_Alcool'][0],
-        'Tempo de Tela': 3 - input_df['Tempo_Uso_Tecnologia'][0],
-        'Alimentos Calóricos': 3 - input_df['Frequencia_Consumo_Alimento_Calorico'][0],
-    }
+habitos_ruins = {
+    'Baixa Atividade Física': 3 - input_df['Frequencia_Atividade_Fisica'][0],
+    'Baixo Consumo de Vegetais': 3 - input_df['Frequencia_Consumo_Vegetais'][0],
+    'Baixa Ingestão de Água': 3 - input_df['Consumo_Agua'][0],
+    'Excesso de Álcool': input_df['Consumo_Alcool'][0],
+    'Uso Excessivo de Tecnologia': input_df['Tempo_Uso_Tecnologia'][0],
+    'Alimentos Calóricos Frequentes': input_df['Frequencia_Consumo_Alimento_Calorico'][0]
+}
 
-    # GAP para o comportamento ideal
-    gap_preventivo = {k: 3 - v for k, v in habitos_usuario.items()}
+df_ruins = (
+    pd.DataFrame.from_dict(habitos_ruins, orient='index', columns=['Impacto Negativo'])
+    .sort_values('Impacto Negativo', ascending=False)
+)
 
-    df_gap = (
-        pd.DataFrame.from_dict(
-            gap_preventivo,
-            orient='index',
-            columns=['Distância do Ideal']
-        )
-        .sort_values('Distância do Ideal', ascending=False)
-    )
+df_ruins = df_ruins[df_ruins['Impacto Negativo'] > 0].head(3)
 
-    # Remove hábitos já adequados
-    df_gap = df_gap[df_gap['Distância do Ideal'] > 0]
+fig1, ax1 = plt.subplots()
+ax1.pie(
+    df_ruins['Impacto Negativo'],
+    labels=df_ruins.index,
+    autopct='%1.0f%%',
+    startangle=90,
+    colors=['black', 'gray', 'lightgray'],
+    wedgeprops={'edgecolor': 'black'}
+)
+ax1.set_title('Principais Hábitos Negativos')
+st.pyplot(fig1)
 
-    # Seleciona os 3 principais
-    df_pizza_3 = df_gap.head(3)
 
-    # Cores preto, cinza e branco
-    cores_pb = ['black', 'gray', 'lightgray']
+st.markdown("---")
+st.subheader("🌱 Top 3 Hábitos que Mais Protegem Contra a Obesidade")
 
-    fig3, ax3 = plt.subplots()
-    ax3.pie(
-        df_pizza_3['Distância do Ideal'],
-        labels=df_pizza_3.index,
-        autopct='%1.0f%%',
-        startangle=90,
-        colors=cores_pb,
-        wedgeprops={'edgecolor': 'black'}
-    )
+habitos_bons = {
+    'Atividade Física Regular': input_df['Frequencia_Atividade_Fisica'][0],
+    'Consumo de Vegetais': input_df['Frequencia_Consumo_Vegetais'][0],
+    'Boa Ingestão de Água': input_df['Consumo_Agua'][0],
+    'Controle do Álcool': 3 - input_df['Consumo_Alcool'][0],
+    'Menor Uso de Tecnologia': 3 - input_df['Tempo_Uso_Tecnologia'][0],
+    'Baixo Consumo de Fast food ': 3 - input_df['Frequencia_Consumo_Alimento_Calorico'][0]
+}
 
-    ax3.set_title('Top 3 Fatores Onde Pequenas Mudanças Mais Ajudam')
-    st.pyplot(fig3)
+df_bons = (
+    pd.DataFrame.from_dict(habitos_bons, orient='index', columns=['Impacto Positivo'])
+    .sort_values('Impacto Positivo', ascending=False)
+)
+
+df_bons = df_bons[df_bons['Impacto Positivo'] > 0].head(3)
+
+fig3, ax3 = plt.subplots()
+ax3.pie(
+    df_bons['Impacto Positivo'],
+    labels=df_bons.index,
+    autopct='%1.0f%%',
+    startangle=90,
+    colors=['black', 'gray', 'lightgray'],
+    wedgeprops={'edgecolor': 'black'}
+)
+ax3.set_title('Principais Hábitos Protetores')
+st.pyplot(fig3)
+
+
+
+
+st.markdown("---")
+st.subheader("📊 Perfil Comportamental Geral")
+
+labels = [
+    'Atividade Física',
+    'Vegetais',
+    'Água',
+    'Álcool',
+    'Tecnologia',
+    'Alimentos Calóricos',
+    'Alimento Entre Refeições',
+    'Fumante',
+    'Monitoramento Calórico'
+]
+
+valores = [
+    input_df['Frequencia_Atividade_Fisica'][0],
+    input_df['Frequencia_Consumo_Vegetais'][0],
+    input_df['Consumo_Agua'][0],
+    3 - input_df['Consumo_Alcool'][0],
+    3 - input_df['Tempo_Uso_Tecnologia'][0],
+    3 - input_df['Frequencia_Consumo_Alimento_Calorico'][0],
+    3 - input_df['Consumo_Alimento_Entre_Refeicoes'][0],
+    3 - input_df['Fumante'][0],
+    input_df['Monitoramento_Calorico'][0]
+]
+
+# Fecha o gráfico radar
+valores += valores[:1]
+
+angles = np.linspace(0, 2 * math.pi, len(labels), endpoint=False)
+angles = np.concatenate([angles, angles[:1]])
+
+fig2 = plt.figure(figsize=(6, 6))
+ax2 = fig2.add_subplot(111, polar=True)
+
+ax2.plot(angles, valores, linewidth=2)
+ax2.fill(angles, valores, alpha=0.2)
+
+ax2.set_thetagrids(np.degrees(angles[:-1]), labels)
+ax2.set_ylim(0, 3)
+
+st.pyplot(fig2)
