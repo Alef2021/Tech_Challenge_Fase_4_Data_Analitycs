@@ -1,58 +1,165 @@
-# 🩺 Sistema Preditivo de Risco de Obesidade
+# 🧠 Tech Challenge — Fase 4 | Data Analytics  
+## Sistema Preditivo de Risco de Obesidade
 
-## 🚀 Visão Geral do Projeto
-
-Este projeto foi desenvolvido como parte do **Tech Challenge - Fase 4 - Data Analytics** da Pós-Graduação em Tecnologia e visa criar um **sistema preditivo** para auxiliar profissionais de saúde a diagnosticar e prever o risco de obesidade em pacientes.
-
-O sistema utiliza técnicas de Machine Learning (ML) para analisar fatores comportamentais, históricos de habitos de uma pessoa, fornecendo um diagnóstico de risco em uma das 3 classes  definidas.
+Projeto desenvolvido como parte do **Tech Challenge – Fase 4** da **Pós-Tech em Data Analytics (POSTECH)**, com o objetivo de aplicar conceitos de **Machine Learning, Análise Exploratória de Dados e Deploy de Modelos** em um cenário real de negócio na área da saúde.
 
 ### 🔗 Link do Aplicativo Streamlit
 
-Você pode acessar a aplicação preditiva aqui: **[https://aleftc4.streamlit.app/](https://aleftc4.streamlit.app/)**
+Você pode acessar a aplicação preditiva aqui: **[https://aleftc4versao3.streamlit.app/](https://aleftc4versao3.streamlit.app/)**
 
+## 📌 Problema de Negócio
 
-### 🎯 Objetivos de Entrega
+A obesidade é uma condição médica caracterizada pelo acúmulo excessivo de gordura corporal, podendo causar diversos riscos à saúde.  
 
-O projeto cumpriu os seguintes requisitos:
-* ✅ **Pipeline de ML:** Demonstração completa de *feature engineering* e treinamento do modelo.
-* ✅ **Assertividade:** Modelo com acurácia acima de 75% (Modelo XGBoost alcançou 88% na classificação em 3 classes).
-* 🚧 **Deploy:** Modelo implantado em uma aplicação preditiva utilizando Streamlit (`app.py`).
-* 🚧 **Visão Analítica:** Construção de um painel com principais *insights* (Dashboard a ser entregue separadamente).
-* 🚧 **Documentação:** Arquivo de entrega contendo os links do App, Dashboard e Repositório (Requisito de documentação).
+Neste desafio, o objetivo foi **desenvolver um modelo de Machine Learning capaz de prever o risco de obesidade em pacientes**, auxiliando a equipe médica na **tomada de decisão clínica**, além de **construir uma visão analítica com insights relevantes sobre os fatores associados à obesidade**.
 
+---
 
+## 🎯 Objetivos do Projeto
+
+- Desenvolver uma **pipeline completa de Machine Learning**
+- Treinar um modelo com **assertividade superior a 75%**
+- Criar uma **aplicação preditiva interativa utilizando Streamlit**
+- Construir um **dashboard analítico com insights sobre obesidade**
+- Apresentar os resultados de forma clara e orientada ao negócio
+
+---
+
+## 🗂️ Base de Dados
+
+O projeto utiliza o dataset **`Obesity.csv`**, contendo informações demográficas, comportamentais e de estilo de vida.
+
+### Principais variáveis:
+- Gênero
+- Idade
+- Altura e Peso
+- Histórico familiar de obesidade
+- Consumo de alimentos calóricos
+- Consumo de vegetais
+- Consumo de água
+- Frequência de atividade física
+- Uso de tecnologia
+- Consumo de álcool
+- Meio de transporte  
+- **Variável alvo:** Nível de Obesidade
+
+---
 
 ## ⚙️ Pipeline de Machine Learning
 
-### 1. Feature Engineering e Pré-processamento
+1. Análise Exploratória de Dados (EDA)  
+2. Limpeza e tratamento de dados  
+3. Feature Engineering  
+4. Codificação de variáveis categóricas  
+5. Normalização e padronização  
+6. Treinamento e avaliação de modelos  
+7. Seleção do modelo final  
+8. Salvamento do modelo  
+9. Deploy em aplicação Streamlit  
 
-O pré-processamento dos dados foi crucial para preparar o conjunto para os modelos:
+---
 
-* **IMC (Índice de Massa Corporal):** Nova *feature* calculada a partir de `Peso` e `Altura`. As colunas **`Peso`** e **`Altura`** foram subsequentemente **removidas** das *features* de treinamento (`X`), pois o modelo se concentrou nas variáveis de hábito.
-* **Discretização:** Colunas contínuas (`FCVC`, `NCP`, `CH2O`, `FAF`, `TUE`) que representavam frequência/níveis de consumo foram simplificadas para o primeiro dígito inteiro.
-* **Conversão de Categóricas (Mapeamento de Hábitos):**
-    * Variáveis binárias (`yes`/`no`) foram mapeadas para `1`/`0` (Ex: `Histórico_Familiar_Obesidade`, `Fumante`).
-    * Variáveis ordinais de frequência (`no`, `Sometimes`, `Frequently`, `Always`) foram mapeadas para `0`, `1`, `2`, `3` (Ex: `Consumo_Alcool`, `Consumo_Alimento_Entre_Refeicoes`).
-    * O `Meio_Transporte` foi classificado em 3 níveis de intensidade (`0`, `1`, `2`).
-* **Tratamento da Variável Alvo:** A coluna original `Obesity_level` foi utilizada em três formatos para teste: **Binário**, **3 Classes** e **4 Classes**.
+## 🔍 Avaliação e Seleção do Modelo
 
-### 2. Treinamento e Avaliação de Modelos
+Durante o desenvolvimento do projeto, foram testados diferentes algoritmos de Machine Learning, incluindo:
 
-Foram testados três algoritmos em três abordagens de classificação distintas: Regressão Logística, Random Forest e XGBoost.
+- Regressão Logística  
+- Random Forest  
+- XGBoost  
 
-| Abordagem | Classes | Modelo Vencedor | Acurácia |
-| :---: | :---: | :---: | :---: |
-| Binária | Não Obeso / Obeso | **XGBoost** | **91%** |
-| **3 Classes** | **Normal / Sobrepeso / Obeso** | **XGBoost** | **88%** |
-| 4 Classes | Abaixo do Peso / Normal / Sobrepeso / Obeso | XGBoost | 82% |
+Os modelos foram comparados considerando métricas de desempenho, capacidade de generalização, estabilidade dos resultados e aderência ao contexto de negócio da área da saúde.
 
-O modelo **XGBoost** com **3 Classes** (Normal/Sobrepeso/Obeso) foi o escolhido, oferecendo um bom nível de detalhe no diagnóstico com alta confiabilidade (88% de acurácia).
+Após os testes, optou-se pela utilização do **XGBoost com classificação em três classes**, pois apresentou:
 
-## 💻 Aplicação Preditiva (Streamlit)
+- Apresentou 85% de acurácia
+- Melhor equilíbrio entre acurácia, precisão e recall  
+- Maior capacidade de capturar relações não lineares  
+- Melhor distinção entre níveis intermediários de risco  
+- Resultados mais consistentes em validações  
 
-A aplicação `app.py` permite que a equipe médica insira os dados do paciente e receba uma **previsão do Status de Risco** (Baixo, Médio, Alto) e um **nível de confiança**:
+### 📊 Estratégia de Classificação
 
-* **0:** `PESO NORMAL / BAIXO RISCO` / 🟢 Verde /
-* **1:** `SOBREPESO / RISCO MÉDIO`  /🟠 Laranja /
-* **2:** `OBESIDADE / ALTO RISCO`  /🔴 Vermelho /
+O modelo final foi configurado para realizar uma **classificação multiclasse**, segmentando os pacientes em:
 
+- 🟢 **Peso Normal / Baixo Risco**
+- 🟡 **Sobrepeso / Risco Médio**
+- 🔴 **Obesidade / Alto Risco**
+
+Além da classe prevista, o modelo retorna a **probabilidade associada à predição**, aumentando a confiabilidade para apoio à decisão clínica.
+
+---
+
+## 🖥️ Aplicação Streamlit
+
+### 1️⃣ Dashboard Analítico — Análise Exploratória
+- Visualização interativa dos dados
+- Filtros por gênero, idade, consumo de água e status de obesidade
+- KPIs principais (IMC médio, idade média, etc.)
+- Gráficos e insights comportamentais
+
+### 2️⃣ Sistema Preditivo de Risco
+- Inserção interativa dos dados do paciente
+- Previsão do risco de obesidade em tempo real
+- Probabilidade associada à previsão
+- Identificação dos principais hábitos de risco e proteção
+- Visualização do perfil comportamental do paciente
+
+---
+
+## 🗃️ Estrutura do Repositório
+
+```
+├── data/
+│   └── Obesity.csv
+├── notebooks/
+│   ├── explocacao.ipynb
+│   └── treinamento_teste_modelosML.ipynb
+├── src/
+│   ├── modelos/
+│   │   └── modelo_obesidade_xgb_model_3_class.pkl
+│   └── streamlit/
+│       ├── app_explora.py        
+│       └── pages/                
+│           └── app.py            
+├── gif_fundo/
+│   └── giphy.gif
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## ▶️ Como Executar o Projeto
+
+```bash
+pip install -r requirements.txt
+streamlit run app_explora.py
+streamlit run app.py
+```
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- Python  
+- Pandas  
+- NumPy  
+- Matplotlib  
+- Seaborn  
+- Scikit-learn  
+- XGBoost  
+- Streamlit  
+
+---
+
+## 👨‍🎓 Autor
+
+**Aluno:** Alef Souza Pereira  
+**Curso:** Pós-Tech em Data Analytics  
+**Instituição:** POSTECH  
+
+---
+
+## 📎 Considerações Finais
+
+Este projeto demonstra a aplicação prática de Data Analytics e Machine Learning em um problema real da área da saúde, com foco em geração de insights e apoio à tomada de decisão clínica.

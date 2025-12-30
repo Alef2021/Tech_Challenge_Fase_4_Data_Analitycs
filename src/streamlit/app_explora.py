@@ -17,7 +17,7 @@ st.set_page_config(
 col1, col2, col3 = st.columns([8, 1, 1])
 
 with col3:
-    if st.button("🔁 Modelo ML de Previsão"):
+    if st.button("⚙️ Modelo ML de Previsão"):
         st.switch_page("pages/app.py")
 
 
